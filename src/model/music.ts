@@ -52,7 +52,7 @@ export default class Music {
     mpeg.on('end', async () => {
       const stream = createReadStream(file.tempFilePath);
       const metadata = await mm.parseFile(file.tempFilePath);
-      console.log(metadata);
+      console.log(userId);
       const size = statSync(file.tempFilePath);
       const uuid = crypto.randomUUID();
       const params = {
@@ -60,7 +60,7 @@ export default class Music {
         Key: `${userId}/${uuid}.mp3`,
         Body: stream
       };
-      console.log(stream);
+
       await MusicModel.create({
         id: uuid,
         name: metadata.common.title,

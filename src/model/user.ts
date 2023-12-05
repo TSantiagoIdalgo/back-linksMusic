@@ -42,7 +42,7 @@ export default class User {
     };
     const token = Jwt.sign(userToken, process.env.SECRET as string);
     await sendVerifyMail(user.email, token);
-    console.log(token);
+
     return newUser;
   }
 

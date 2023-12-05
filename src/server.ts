@@ -20,7 +20,7 @@ async function Server (typeDefs: DocumentNode[], resolvers: any) {
   server.use('/files',
     fileUpload({
       useTempFiles: true,
-      tempFileDir: './uploads'
+      tempFileDir: './src/uploads'
     }),
     cors(),
     morgan('dev'),
