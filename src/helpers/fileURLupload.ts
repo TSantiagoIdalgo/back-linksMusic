@@ -10,10 +10,11 @@ export const fileUrlUpload = async (id: string) => {
   const audio = ytdl(link, { filter: 'audioonly', quality: 'highestaudio'});
   const audioData = await ytdl.getInfo(link);
   const uuid = crypto.randomUUID();
+  console.log(audio);
   const pathFile = `./format/${uuid}.mp3`;
   const outputPathFile = `./uploads/${uuid}.mp3`;
   audio.pipe(createWriteStream(pathFile));
-
+  console.log(audio);
   const mpeg = ffmpeg()
     .input(pathFile)
     .output(outputPathFile)
@@ -30,5 +31,6 @@ export const fileUrlUpload = async (id: string) => {
     name: audioData.videoDetails.title,
     image: audioData.videoDetails.thumbnails[0].url
   };
+  console.log(mpeg);
   return { mpeg, file };
 };

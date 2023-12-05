@@ -49,6 +49,7 @@ export default class MusicController {
 
   static async postMusicByUrl (req: Request, res: Response): Promise<void> {
     const { id, userId } = req.body;
+    console.log(id);
     try {
       if (!id || !userId) throw new Error('Id and userId are required');
       (await Music.createByUrl(id, userId))
