@@ -21,7 +21,6 @@ export const fileUrlUpload = async (id: string) => {
     .outputOptions('-metadata', `title=${audioData.videoDetails.title}`)
     .outputOptions('-metadata', `artist=${audioData.videoDetails.author.user}`)
     .outputOptions('-metadata', `album=${audioData.videoDetails.author.name}`)
-    .outputFormat('mp3')
     .on('end', () => {
       unlinkSync(pathFile);
       console.log('File has been converted succesfully');
