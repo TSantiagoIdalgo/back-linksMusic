@@ -73,7 +73,6 @@ export default class Music {
       });
       const command = new PutObjectCommand(params);
       await AWSClient.send(command);
-      unlinkSync(file.tempFilePath);
     });
     return mpeg;
   }
