@@ -1,4 +1,4 @@
-import { createWriteStream } from 'fs';
+import { createWriteStream, unlinkSync } from 'fs';
 import crypto from 'crypto';
 import ytdl from 'ytdl-core';
 import ffmpeg from 'fluent-ffmpeg';
@@ -22,9 +22,9 @@ export const fileUrlUpload = async (id: string) => {
     .outputOptions('-metadata', `title=${audioData.videoDetails.title}`)
     .outputOptions('-metadata', `artist=${audioData.videoDetails.author.user}`)
     .outputOptions('-metadata', `album=${audioData.videoDetails.author.name}`)
-    .outputFormat('mp3')
     .on('end', () => {
       console.log('File has been converted succesfully');
+      unlinkSync(pathFile);
     });
   const file = {
     tempFilePath: outputPathFile,

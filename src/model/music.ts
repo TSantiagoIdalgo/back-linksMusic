@@ -52,7 +52,7 @@ export default class Music {
     mpeg.on('end', async () => {
       const stream = createReadStream(file.tempFilePath);
       const metadata = await mm.parseFile(file.tempFilePath);
-      console.log(userId);
+
       const size = statSync(file.tempFilePath);
       const uuid = crypto.randomUUID();
       const params = {
@@ -73,6 +73,7 @@ export default class Music {
       });
       const command = new PutObjectCommand(params);
       await AWSClient.send(command);
+      unlinkSync(file.tempFilePath);
     });
     return mpeg;
   }
