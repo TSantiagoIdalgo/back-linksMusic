@@ -9,8 +9,8 @@ export const fileUrlUpload = async (id: string) => {
   const link = `https://www.youtube.com/watch?v=${id}`;
   const audio = ytdl(link, { filter: 'audioonly', quality: 'highestaudio'});
   const audioData = await ytdl.getInfo(link);
-  const uuid = crypto.randomUUID();
-
+  const uuid = crypto.randomUUID().split('-').join('');
+  
   const pathFile = `./src/format/${uuid}.mp3`;
   const outputPathFile = `./src/uploads/${uuid}.mp3`;
 
