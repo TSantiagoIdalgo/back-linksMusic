@@ -46,35 +46,34 @@ export default class Music {
     return result;
   }
 
-  static async createByUrl (id: string, userId: string) {
-    const { mpeg, file } = await fileUrlUpload(id);
+  static async createByUrl (id: string, userId: string): Promise<IMusicModel> {
+    const { file, image, uuid } = await fileUrlUpload(id);
 
-    mpeg.on('end', async () => {
-      const stream = createReadStream(file.tempFilePath);
-      const metadata = await mm.parseFile(file.tempFilePath);
+    const stream = createReadStream(file);
+    const metadata = await mm.parseFile(file);
 
-      const size = statSync(file.tempFilePath);
-      const uuid = crypto.randomUUID();
-      const params = {
-        Bucket: AWS_BUCKET_NAME,
-        Key: `${userId}/${uuid}.mp3`,
-        Body: stream
-      };
+    const size = statSync(file);
+    const params = {
+      Bucket: AWS_BUCKET_NAME,
+      Key: `${userId}/${uuid}.mp3`,
+      Body: stream
+    };
 
-      await MusicModel.create({
-        id: uuid,
-        name: metadata.common.title,
-        author: metadata.common.artist,
-        album: metadata.common.album,
-        size: size.size,
-        duration: metadata.format.duration,
-        image: file.image,
-        userId: userId
-      });
-      const command = new PutObjectCommand(params);
-      await AWSClient.send(command);
+    const command = new PutObjectCommand(params);
+    await AWSClient.send(command);
+
+    const music = await MusicModel.create({
+      id: uuid,
+      name: metadata.common.title,
+      author: metadata.common.artist,
+      album: metadata.common.album,
+      size: size.size,
+      duration: metadata.format.duration,
+      image: image,
+      userId: userId
     });
-    return mpeg;
+
+    return music;
   }
 
   static async addPlaylist (musicId: string, playlistId: string) {

@@ -16,20 +16,22 @@ export const fileUrlUpload = async (id: string) => {
 
   audio.pipe(createWriteStream(pathFile));
   
+  await new Promise((resolve, reject) => {
+    audio.on('end', resolve);
+    audio.on('error', reject);
+  });
+
   const mpeg = ffmpeg()
     .input(pathFile)
     .output(outputPathFile)
     .outputOptions('-metadata', `title=${audioData.videoDetails.title}`)
     .outputOptions('-metadata', `artist=${audioData.videoDetails.author.user}`)
-    .outputOptions('-metadata', `album=${audioData.videoDetails.author.name}`)
-    .on('end', () => {
-      console.log('File has been converted succesfully');
-    });
-  const file = {
-    tempFilePath: outputPathFile,
-    name: audioData.videoDetails.title,
-    image: audioData.videoDetails.thumbnails[0].url
-  };
+    .outputOptions('-metadata', `album=${audioData.videoDetails.author.name}`);
 
-  return { mpeg, file };
+  await new Promise ((_resolve, reject) => {
+    mpeg.on('end', () => console.log('File has been converted succesfully'));
+    mpeg.on('error', reject);
+  });
+
+  return { file: outputPathFile, image: audioData.videoDetails.thumbnails[0].url, uuid };
 };

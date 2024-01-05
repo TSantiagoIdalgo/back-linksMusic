@@ -2,6 +2,7 @@ import UserModel from '../database/models/userModel';
 import bcrypt from 'bcrypt';
 import Jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import crypto from 'crypto';
 import { AWS_BUCKET_NAME } from '../AWS/awsconfig';
 import AWSClient from '../AWS/S3/s3';
 import { IUser, IUserModel } from '../types/user';
@@ -41,7 +42,7 @@ export default class User {
       email: user?.email
     };
     const token = Jwt.sign(userToken, process.env.SECRET as string);
-    await sendVerifyMail(user.email, token);
+    await sendVerifyMail(user.email, user.userName, token);
 
     return newUser;
   }
@@ -109,6 +110,28 @@ export default class User {
 
     const token = Jwt.sign(userToken, process.env.SECRET as string);
     return { ...user?.dataValues, token };
+  }
+
+  static async networkLogin (userName: string, email: string) {
+    const userFind = await UserModel.findOne({ where: { email: email } });
+    const pwd = crypto.randomUUID();
+    const userToken = {
+      userName,
+      email
+    };
+
+    const token = Jwt.sign(userToken, process.env.SECRET as string);
+
+    if (userFind === null) {
+      await UserModel.create({
+        userName,
+        email,
+        passwordHash: pwd,
+      });
+    }
+
+    return token;
+
   }
 
   static async verify (token: string): Promise<IUser> {

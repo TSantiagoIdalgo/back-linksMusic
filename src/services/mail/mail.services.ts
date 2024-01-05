@@ -14,11 +14,11 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-export async function sendVerifyMail(adress: string, token: string) {
+export async function sendVerifyMail(adress: string, name: string, token: string) {
   transporter.sendMail({
     from: 'LinksMusic',
     to: adress,
     subject: 'Verify your email',
-    html: mailTemplate(adress, token)
+    html: mailTemplate(name, token)
   });
 }

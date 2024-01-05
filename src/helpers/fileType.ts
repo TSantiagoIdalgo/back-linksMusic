@@ -1,15 +1,11 @@
 import { IMusicModel } from '../types/music';
 
 export const fileType = (file: IMusicModel | undefined): boolean => {
-  if (!file) {
-    return true;
-  }
+  if (!file) return true;
 
   const fileExtension = file.name.slice(-3);
+  if (!isAudioExtension(fileExtension)) return true;
 
-  if (!isAudioExtension(fileExtension)) {
-    return true;
-  }
   return false;
 };
 

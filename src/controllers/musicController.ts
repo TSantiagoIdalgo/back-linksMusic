@@ -52,10 +52,8 @@ export default class MusicController {
 
     try {
       if (!id || !userId) throw new Error('Id and userId are required');
-      (await Music.createByUrl(id, userId))
-        .on('end', () => res.sendStatus(201))
-        .on('error', (error) => { throw new Error(error); })
-        .run();
+      const newMusic = await Music.createByUrl(id, userId);
+      res.status(201).json(newMusic);
     } catch (error: any) {
       res.status(400).json({ message: error.message });
     }
