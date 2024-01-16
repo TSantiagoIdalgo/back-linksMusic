@@ -1,5 +1,5 @@
 import UserModel from '../database/models/userModel';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import Jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import crypto from 'crypto';

@@ -36,7 +36,7 @@ module.exports = {
     ],
     'linebreak-style': [
       'error',
-      'windows'
+      'unix'
     ],
     'quotes': [
       'error',
@@ -46,6 +46,7 @@ module.exports = {
       'error',
       'always'
     ],
-    '@typescript-eslint/no-explicit-any': 'off'
+    '@typescript-eslint/no-explicit-any': 'off',
+    'eslint-disable/linebreak-style': 'off',
   }
 };

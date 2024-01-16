@@ -1,8 +1,8 @@
-import { createWriteStream } from 'fs';
+import { createWriteStream, unlinkSync } from 'fs';
 import crypto from 'crypto';
 import ytdl from 'ytdl-core';
 import ffmpeg from 'fluent-ffmpeg';
-import path from 'ffmpeg-static';
+import { path } from '@ffmpeg-installer/ffmpeg';
 ffmpeg.setFfmpegPath(path as string);
 
 export const fileUrlUpload = async (id: string) => {
@@ -15,23 +15,23 @@ export const fileUrlUpload = async (id: string) => {
   const outputPathFile = `./src/uploads/${uuid}.mp3`;
 
   audio.pipe(createWriteStream(pathFile));
-  
+
   await new Promise((resolve, reject) => {
     audio.on('end', resolve);
     audio.on('error', reject);
   });
 
-  const mpeg = ffmpeg()
-    .input(pathFile)
-    .output(outputPathFile)
-    .outputOptions('-metadata', `title=${audioData.videoDetails.title}`)
-    .outputOptions('-metadata', `artist=${audioData.videoDetails.author.user}`)
-    .outputOptions('-metadata', `album=${audioData.videoDetails.author.name}`);
-
-  await new Promise ((_resolve, reject) => {
-    mpeg.on('end', () => console.log('File has been converted succesfully'));
-    mpeg.on('error', reject);
+  await new Promise((resolve, reject) => {
+    ffmpeg()
+      .input(pathFile)
+      .output(outputPathFile)
+      .outputOptions('-metadata', `title=${audioData.videoDetails.title}`)
+      .outputOptions('-metadata', `artist=${audioData.videoDetails.author.user}`)
+      .outputOptions('-metadata', `album=${audioData.videoDetails.author.name}`)
+      .on('end', () => unlinkSync(pathFile))
+      .on('end', resolve)
+      .on('error', reject)
+      .run();
   });
-
   return { file: outputPathFile, image: audioData.videoDetails.thumbnails[0].url, uuid };
 };

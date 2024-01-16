@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import express from 'express';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
@@ -6,6 +7,7 @@ import fileUpload from 'express-fileupload';
 import musicRoute from './route/musicRoute';
 import cors from 'cors';
 import morgan from 'morgan';
+import bodyParser from 'body-parser';
 
 const PORT = process.env.PORT || 4000;
 
@@ -24,6 +26,7 @@ async function Server (typeDefs: DocumentNode[], resolvers: any) {
     }),
     cors(),
     morgan('dev'),
+    bodyParser.json(),
     musicRoute);
   server.use('/graphql', 
     cors(), 

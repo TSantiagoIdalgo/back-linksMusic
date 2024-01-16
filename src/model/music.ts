@@ -72,7 +72,7 @@ export default class Music {
       image: image,
       userId: userId
     });
-
+    unlinkSync(file);
     return music;
   }
 
