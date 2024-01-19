@@ -21,6 +21,7 @@ const musicSchema = gql`
 
   extend type Mutation {
     addMusicToPlaylist(musicId: String, playlistId: String): Music
+    removeFromPlaylist(musicId: String, playlistId: String): Music
   }
 `;
 

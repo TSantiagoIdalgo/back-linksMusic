@@ -17,9 +17,10 @@ export default class UserMusic {
   }
 
   static async delete(id: string, fileName: string): Promise<DeleteObjectCommandOutput> {
+    const musicId = fileName.split('-').join('');
     const params = {
       Bucket: AWS_BUCKET_NAME,
-      Key: `${id}/${fileName}.mp3`
+      Key: `${id}/${musicId}.mp3`
     };
     const command = new DeleteObjectCommand(params);
     await MusicModel.destroy({ where: { id: fileName, userId: id }});

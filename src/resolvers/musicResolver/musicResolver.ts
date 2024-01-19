@@ -18,7 +18,9 @@ const musicResolver = {
   },
   Mutation: {
     addMusicToPlaylist: async (_: any, args: PlaylistMusic): Promise<IMusicModel> =>
-      await MusicController.addMusicToPlaylist(args.musicId, args.playlistId)
+      await MusicController.addMusicToPlaylist(args.musicId, args.playlistId),
+    removeFromPlaylist: async (_: any, args: PlaylistMusic): Promise<IMusicModel> =>
+      await MusicController.removeMusicFromPlaylist(args.musicId, args.playlistId),
   }
 };
 

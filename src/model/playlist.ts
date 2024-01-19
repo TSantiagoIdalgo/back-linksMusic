@@ -46,7 +46,8 @@ export default class PlayList {
   }
 
   static async delete (id: string) {
-    const playlist = await PlayListModel.destroy({
+    const playlist = await PlayListModel.findByPk(id);
+    await PlayListModel.destroy({
       where: {
         id: id
       }

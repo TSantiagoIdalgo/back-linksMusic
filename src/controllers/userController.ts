@@ -113,4 +113,19 @@ export default class UserController {
       throw new GraphQLError(error.message);
     }
   }
+
+  static async userTokenVerify (token: string | undefined): Promise<boolean> {
+    try {
+      if (!token) throw new GraphQLError('Token is undefined', {
+        extensions: { code: 'BAD_USER_INPUT', argumentName: 'token' }
+      });
+      const tokenVerify = await User.tokenVerify(token);
+      if (!tokenVerify) throw new GraphQLError('Invalid token', {
+        extensions: { code: 'BAD_USER_INPUT' }
+      });
+      return tokenVerify;
+    } catch (error: any) {
+      throw new GraphQLError(error.message);
+    }
+  }
 }

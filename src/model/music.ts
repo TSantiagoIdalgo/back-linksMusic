@@ -23,7 +23,7 @@ export default class Music {
     const stream = createReadStream(file.tempFilePath as string);
     const metadata = await mm.parseFile(file.tempFilePath as string);
     const size = statSync(file.tempFilePath as string);
-    const uuid = crypto.randomUUID();
+    const uuid = crypto.randomUUID().split('-').join('');
     const params = {
       Bucket: AWS_BUCKET_NAME,
       Key: `${id}/${uuid}.mp3`,
@@ -93,5 +93,15 @@ export default class Music {
       return result;
     }
     return null;
+  }
+
+  static async removeFromPlaylist (musicId: string, playlistId: string) {
+    const music = await MusicModel.findByPk(musicId);
+    const playlist = await PlayListModel.findByPk(playlistId);
+    if (music && playlist) {
+      await playlist?.removeMusic(music);
+      return music;
+    }
+    return music;
   }
 }

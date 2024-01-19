@@ -69,11 +69,12 @@ export default class PlaylistController {
     }
   }
 
-  static async deletePlaylist (id: string | undefined): Promise<number> {
+  static async deletePlaylist (id: string | undefined): Promise<IPlaylistModel> {
     try {
       if (!id) throw new Error('Playlist id is undefined');
 
       const playlist = await PlayList.delete(id);
+      if (playlist === null) throw new GraphQLError('Playlist not found');
       return playlist;
     } catch (error: any) {
       throw new GraphQLError(error.message, {
@@ -87,7 +88,7 @@ export default class PlaylistController {
       if (!id) throw new GraphQLError('Playlist id is undefined', {
         extensions: { code: 'BAD_USER_INPUT', argumentName: 'id' }
       });
-      if (!playlist) throw new GraphQLError('Playlist data is undefined', {
+      if (!playlist.tittle || !playlist.description) throw new GraphQLError('Playlist data is undefined', {
         extensions: { code: 'BAD_USER_INPUT', argumentName: 'playlist' }
       });
       
@@ -98,9 +99,7 @@ export default class PlaylistController {
 
       return playlistUpdated;
     } catch (error: any) {
-      throw new GraphQLError(error.message, {
-        extensions: { code: error.extensions.code }
-      });
+      throw new GraphQLError(error.message);
     }
   }
 

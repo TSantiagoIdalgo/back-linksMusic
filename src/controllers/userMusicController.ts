@@ -17,9 +17,7 @@ export default class UserMusicController {
     
       return userMusics;
     } catch (error: any) {
-      throw new GraphQLError(error.message, {
-        extensions: { code: error.extensions.code}
-      });
+      throw new GraphQLError(error.message);
     }
   }
 
@@ -36,9 +34,7 @@ export default class UserMusicController {
       };
       return response;
     } catch (error: any) {
-      throw new GraphQLError(error.message, {
-        extensions: { code: error.extensions.code}
-      });
+      throw new GraphQLError(error.message);
     }
   }
 
@@ -50,9 +46,7 @@ export default class UserMusicController {
       const url = await UserMusic.getURL(filename, userId);
       return url;
     } catch (error: any) {
-      throw new GraphQLError(error.message, {
-        extensions: { code: error.extensions.code }
-      });
+      throw new GraphQLError(error.message);
     }
   }
 

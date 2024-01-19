@@ -16,6 +16,7 @@ const userSchema = gql`
         getUserById(id: ID!): User
         getUserLogin(email: String!, passwordHash: String!): User
         getUserNetworkLogin(email: String!, userName: String!): String
+        userTokenVerify(token: String!): Boolean
     }
 
     extend type Mutation {

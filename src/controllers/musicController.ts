@@ -86,4 +86,17 @@ export default class MusicController {
       });
     }
   }
+
+  static async removeMusicFromPlaylist (musicId: string, playlistId: string) {
+    try {
+      if (!musicId || !playlistId) throw new GraphQLError('Id is required');
+      const music = await Music.removeFromPlaylist(musicId, playlistId);
+      if (music === null) throw new Error('Music or playlist not found');
+
+      return music; 
+    
+    } catch (error: any) {
+      throw new GraphQLError(error.message);
+    }
+  }
 }

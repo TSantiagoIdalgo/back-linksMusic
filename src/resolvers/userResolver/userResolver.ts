@@ -9,7 +9,9 @@ const userResolver = {
     getUserLogin: async (_root: IUserModel, args: IUserModel) =>
       await UserController.userLogin(args.email, args.passwordHash),
     getUserNetworkLogin: async (_root: IUserModel, args: IUserModel) =>
-      await UserController.userNetworkLogin(args.email, args.userName)
+      await UserController.userNetworkLogin(args.email, args.userName),
+    userTokenVerify: async (_root: IUserModel, args: IUserModel) =>
+      await UserController.userTokenVerify(args.token)
   },
   Mutation: {
     userCreate: async (_root: IUserModel, args: IUserModel) => 

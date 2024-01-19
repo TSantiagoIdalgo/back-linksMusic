@@ -147,4 +147,13 @@ export default class User {
 
     return userFind;
   }
+
+  static async tokenVerify (token: string): Promise<boolean> {
+    const tokenVerify = Jwt.verify(token, process.env.SECRET as string);
+
+    if (!tokenVerify) throw new GraphQLError('Invalid token', {
+      extensions: { code: 'BAD_USER_INPUT' }
+    });
+    else return true;
+  }
 }
