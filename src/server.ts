@@ -13,6 +13,9 @@ const PORT = process.env.PORT || 4000;
 
 async function Server (typeDefs: DocumentNode[], resolvers: any) {
   const server = express();
+  const corsOptions = {
+    origin: 'http://localhost:5173/',
+  };
   const apolloServer = new ApolloServer({
     typeDefs: typeDefs,
     resolvers: resolvers,
@@ -24,12 +27,12 @@ async function Server (typeDefs: DocumentNode[], resolvers: any) {
       useTempFiles: true,
       tempFileDir: './src/uploads'
     }),
-    cors(),
+    cors(corsOptions),
     morgan('dev'),
     bodyParser.json(),
     musicRoute);
   server.use('/graphql', 
-    cors(), 
+    cors(corsOptions), 
     express.json(),
     expressMiddleware(apolloServer));
   server.listen(PORT, () => console.log(`Server ready at http://localhost:${PORT}/graphql`));
