@@ -6,7 +6,6 @@ export default class PlaylistController {
   static async getAllPlaylist (): Promise<IPlaylistModel[]> {
     try {
       const playlists = await PlayList.getAll();
-      if (playlists.length === 0) throw new Error('No playlist found');
       return playlists;
     } catch (error: any) {
       throw new GraphQLError(error.message, {
