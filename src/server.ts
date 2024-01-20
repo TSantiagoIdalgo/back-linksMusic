@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 4000;
 async function Server (typeDefs: DocumentNode[], resolvers: any) {
   const server = express();
   const corsOptions = {
-    origin: ['http://localhost:5173', 'https://front-links-music.vercel.app'],
+    origin: ['http://localhost:5173', 'https://dcv88hhl-5174.brs.devtunnels.ms'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   };
